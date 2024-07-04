@@ -1,0 +1,27 @@
+# Authentication
+
+### Summary
+
+Chift's API is protected by a JWT Token.
+You can obtain your JWT token by making use of your clientId, clientSecret and accountId that you can create for your account (see below how to get an access token).
+This JWT Token can then be used in the requests linked to consumers as a BEARER token.
+> An API key created in the sandbox environment will be automatically linked to consumers in the sandbox environment. Same applies for the production environment. This means you must create different api keys for each environment.
+
+### Where can you obtain a client id and a client secret ?
+
+1. Click on the `API Keys`menu
+2. On this page, you can create a new API key. Copy and keep the `client id` and `client secret` in a safe place. This is the only time where you will be able to see the `client secret`.
+3. Note that you can optionally limit the scopes of an API key to one or more consumers.
+
+### Where can I see the GUID of my account ?
+
+1. Click on the `API Keys`menu
+2. On the top left, you can find your acccount ID
+
+### How to obtain the JWT Token/Bearer token?
+
+See the [Create a token](../reference/Chift.json/paths/~1token/post) endpoint that can be used to retrieve the BEARER token with client id, client secret and account id.
+
+### How to use the JWT Token/Bearer token in the other API requests ?
+Include the generated access token in the 'Authorization' header of your API requests.
+> `Authorization: BEARER {accessToken}`
