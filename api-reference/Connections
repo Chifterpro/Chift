@@ -1,0 +1,44 @@
+# Connection lifecyle
+
+### Summary
+
+This document gives you more information about connections. It explains the lifecycle of a connection from the creation until the possible deletion.
+
+#### What are connections ?
+
+Connections make the link between consumers and the software. Each consumer can have multiple connections but only one connection per integration (Odoo, Sage, ...) A connection is represented by a `name`, a `link to a specific software` and `link to a specific Chift API`. A connection will for example represent the credentials to connect to an Odoo instance for a specific consumer.
+
+> The API can be used to retrieve the list of active connections for consumers and as well to get a public URL that consumers can use to configure their connections. Optionally for specific integrations you can as well pass the credentials required when creating the connection allowing you to create connections for your customers; this can be useful for specific use cases.
+
+#### How do you manage connections ?
+
+There are two ways of managing connections:
+
+1) You can manage connections through Chift's platform. This is easy to help you onboarding your clients or when you are in an exploration phase. Through the platform, you can create a consumer and you can access the link that can be used to create a connection. The connection will be created behind the scene for you. Once created, you will see on the consumer the connected software and you will be able to use our unified APIs.
+
+
+2) You can manage connections through our API. This is the preferred way to build a fully embedded experience in your software. The API gives you the possibility to:
+* Create a connection for a consumer: you will receive a link that you can share with your customers so that they can enter their credentials to create the connection. For some integrations, you can pass as well the credentials directly allowing you to create the connection for your customers.
+> You can only have one connection per type of integration (Odoo, Sage, ...) for the same consumer.
+* Update a connection for a consumer: same as above but for a connection that is already existing.
+* Get connections for a consumer: retrieve the list of existing connections for an existing consumer
+* Delete a connection: delete a specific connection for a consumer
+
+#### Multiple connections on same consumer for same API
+
+One consumer can have multiple connections for the same API but only one connection for the same integration/connector (e.g. Odoo).
+When you want to support multiple connections for the same API, you will have to pass a specific header in the HTTP requests as otherwise we will not be able to know which connection to use. This is only needed when you want to work with multiple connections for the same API and for the same consumer.
+
+For this specific use case, you can use one of the following two headers that you can pass in your HTTP requests when making requests on the unified API:
+- X-Chift-Integrationid: code of the integrations (you can get the list of codes through the [Get integrations request](../reference/Chift.json/paths/~1integrations/get)
+- X-Chift-Connectionid: guid of the connection on which you want to process your request
+
+#### Connection lifecyle
+
+The diagram below explains the different phases and statuses of connections. It's important to understand that a connection can be 'active' or 'inactive'. Only when the connection is 'active', you will be able to use it to process requests through the unified APIs. The status of a connection is managed behind the scene for you and should evolve automatically through the correct lifecycle based on the input of your customers. This is the job we help you to not worry about. Next to that we give you through our API and the webhooks all the possibilities to have a detailed view on the status of your connections in order for you to build the best experience for your customers.
+
+![ConnectionLifecycle.png](../assets/images/ConnectionLifecycle.png)
+
+Notes:
+* Local agent is a small executable that needs to be installed to make the bridge between Chift and on-premise applications. This is needed for some softwares. For those connections, additional webhooks are sent out to give you a better understanding on when the agent is up or down. If you make a request on a connection for which the local agent is down you will receive as well a specific error message.
+* Post-connections are inputs that are asked through the configuration of credentials (authentication pages) for your customers. It's asked after the credentials as the inputs are based on the information that is extracted from the connection (e.g. choose the POS location, choose the accounting folder, ...) Some post-connections are mandatory and some post-connections can be activated through the connectors' settings dependent on your implementation and what you want to outsource to Chift.
