@@ -1,0 +1,72 @@
+# Webhooks
+
+### Summary
+
+Chift's webhooks can be used to create custom applications that can react on specific events of the platform and of the unified APIs.
+
+#### How can I manage my webhooks ?
+
+- Webhooks can be managed through the UI in your account settings
+- Webhooks can be managed through the API
+
+#### Technical specifications
+
+- On a specific event, a POST http request is sent to the webhook's url
+- It will contain a JSON payload with at least these attributes:
+```
+- accountid: guid of your Chift's account
+- event: name of the event
+- consumerid: guid of the consumer on which the event occurred
+- created: timestamp (in sec) of the webhook event
+```
+- In the header it will contain as well the following attributes:
+```
+- X-Chift-Signature: encrypted signature of your body payload
+```
+
+#### X-Chift-Signature
+X-Chift-Signature attribute can be used to make sure that incoming calls on your webhook endpoint are coming from Chift.
+
+The X-Chift-Signature is generated based on the signing secret that you can optionally add when you create or update a webhook. It is based on the HMAC authentication method that relies on two keys. One is the signing secret that only you know and the second is the request body.
+
+Most programming languages support HMAC hashes.
+
+An example in NodeJS is the following:
+```
+const hash = crypto
+.createHmac("sha256", encryption.decrypt(SIGNING_SECRET).toString())
+.update(JSON.stringify(REQUEST_BODY), "utf-8")
+.digest("hex");
+```
+
+An example in Python is the following:
+```
+import hmac
+import hashlib
+import json
+
+json_data = json.dumps(REQUEST_BODY, separators=(',', ':'))
+h = hmac.new(SIGNING_SECRET.encode(), json_data.encode(), hashlib.sha256)
+hash = h.hexdigest()
+```
+
+By computing the hash on your endpoint, you can compare it whith the X-Chift-Signature attribute of the header to make sure that the request originated from Chift.
+
+#### List of events
+
+The table below describes the different webhook events that can be emitted on Chift. The additional payload in addition with the above attributes is what will be sent as part of the body to the webhook url.
+
+Please refer as well to the [Connection lifecycle](Connections.md) section to have a better uderstand on when the connection webhooks are sent.
+
+Event name | Description | One API| Adiditional payload (in addition to above mandatory attributes)
+---------|----------|--------- | -------
+ account.connection.created | Event on the creation of a new consumer's connection (you receive this event only when the connection was successfuly created) | / | ```{"connectionid": "guid of the connection on which the event occurred"}```
+ account.connection.updated | Event on the update of a consumer's connection | / |```{"connectionid": "guid of the connection on which the event occurred", "status": "active/inactive"}```
+ account.connection.deleted | Event on the deletion of a consumer's connection | / |```{"connectionid": "guid of the connection on which the event occurred"}```
+ account.connection.up | Event when a local agent is correctly setup | / | ```{"connectionid": "guid of the connection on which the event occurred"}```
+ account.connection.down | Event when a local agent did not send any ping since 15 minutes | / | ```{"connectionid": "guid of the connection on which the event occurred"}```
+ account.flow.enabled | Event on the activation of a flow for a specific consumer | / | ```{"flowid": "guid of the flow on which the event occurred", "syncid": "guid of the sync on which the event occurred"}```
+ account.flow.disabled | Event on the deactivation of a flow for a specific consumer | / | ```{"flowid": "guid of the flow on which the event occurred", "syncid": "guid of the sync on which the event occurred"}```
+ account.flow.executed | Event on full execution of a flow (one event per consumer) | / | ```{"flowid": "guid of the flow on which the event occurred", "syncid": "guid of the sync on which the event occurred", "status": "success/error", "executionid": "guid of the execution of the consumer flow", "parentexecutionid": "guid of the execution of the parent flow"}```
+ pos.order.completed | Event when an order was completed | POS | ```{"order_id": "guid of the order on which the event occurred", "device_id": "guid of the device on which the order was completed (optional)", "customer_id": "guid of the customer that has made the order (optional)", "location_id": "guid of the location on which te order was completed", "updated_at": "time of completion"}```
+ pos.order.updated | Event when the status of an order was updated | POS | ```{"order_id": "guid of the order on which the event occurred", "device_id": "guid of the device on which the order was completed (optional)", "customer_id": "guid of the customer that has made the order (optional)", "location_id": "guid of the location on which te order was completed", "updated_at": "time of completion"}```
