@@ -1,0 +1,32 @@
+# Implementations
+
+On this page, we describe the usual implementations done by our clients.
+1) Authentication workflow
+2) Easy way - you do the work
+3) Lazy way - we do it for you
+
+Those are example of implementations that can of course vary between the use cases of our customers. We do not limit ourselves to those use cases.
+
+## Authentication workflow
+
+![ChiftAuthentication.drawio (5).png](<../assets/images/ChiftAuthentication.png>)
+
+1) From your software, you can initiate the integration for one of your customer.
+2) The consumerId is the link between your customer and Chift. You keep this in your database to be able to make requests to our API when required by your business case.
+3) Based on your consumerId, you receive a link that you can share with your customer to initiate a connection.
+4) Your users are redirected to Chift's authentication page where they can connect to the softwares of your choice.
+5) Once the initial connection is setup, you can activate a webhook to receive asynchronously an event or your user can be redirected to the URL of your choice.
+6) Now you are ready to request our unified APIs.
+
+
+## Easy way
+![ChiftEasy.drawio (1).png](<../assets/images/ChiftEasy.png>)
+
+Our customers usually choose this approach. The authentication of their customers is managed as specified above. After the authentication of their customers/consumers is done, they can connect to our unified APIs to leverage the power of being instantly connected to multiple softwares.
+
+## Lazy way
+![ChiftLazy.drawio (1).png](<../assets/images/ChiftLazy.png>)
+
+For customers that do not have the time to do the implementation themselves, we can help you by using our integration platform to build your synchronization in Chift. This helps you to leverage the magic of integrations without having to worry about building and maintaining any integration.
+
+#### If you are interested or if you have questions, do not hesitate to [contact us.](https://www.chift.eu/contact)
