@@ -1,0 +1,18 @@
+# SDKs
+
+At Chift, our goal is to help companies to scale their integrations.
+Therefore, we want to ease the development for our clients that use our API.
+We have build a few SDKs that can help you to connect to our API in a few minutes.
+
+## Python
+
+[Chift-Python-SDK](https://github.com/chift-oneapi/chift-python-sdk)
+
+## NodeJS
+
+[Chift-NodeJS-SDK](https://github.com/chift-oneapi/chift-nodejs-sdk)
+
+## Other
+
+*In case you are using another development language, please let us know which SDK you would like to see coming by emailing us at support@chift.eu*
+
