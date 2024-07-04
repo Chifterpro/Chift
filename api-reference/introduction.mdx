@@ -1,33 +1,57 @@
----
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
----
+# Introduction
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+Chift universal APIs help software companies to quickly build native integrations within their software. By being connected to one single future proof API, the software can be connected with multiple tools in a few clicks. It drastically decreases the development and maintenance cost for software vendors and their integrations become scalable. By using Chift APIs (Accounting, POS, eCommerce, CRM), your software is easily connected to your clients stack.
 
-## Welcome
+## Available APIs
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+| API        | Supported integrations                                 |
+| ---------- | ------------------------------------------------------ |
+| Accounting | BOB 50 - Exact Online - Horus - Odoo - Octopus - MyUnisoft - Pennylane  - Sage 50 FR - Sage 100 FR - Winbooks Classic - Winbiz - ACD |
+| POS        | Cashpad - Clyo Systems - Fulleapps (Connectill) - HelloCash - Hiboutik -  Innovorder - Lightspeed (*integration requires Lightspeed approval) - Popina - Synapsy - Trivec - Zelty - Zettle      |
+| Commerce   | Magento - Shopify  - WooCommerce - Prestashop |
+| Invoicing   | Axonaut - Boondmanager - Evoliz - Hubspot - Odoo - QuickBooks - Sellsy  - Teamleader |
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+## General concepts
 
-## Authentication
+### Integrations / Connectors
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+In Chift's platform, you can select which integrations you activate for your clients. For example, thanks to the connection with Chift Accounting API, you can activate the `Odoo connection` in one click. This will allow your clients to connect their software to your application.
+This can be done in your account configuration.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+### Consumers
+
+Consumers (or clients) represent instances of your clients that want to benefit from the integrations offered by Chift. Each consumer is represented by a `GUID` and by a `name`. This `GUID` can be used in almost all API requests ([see according documentation](../reference/FastApi-OpenAPI.json)) to represent the consumer you want to interact with.
+
+> The API can be used to automatically create, update, retrive or delete consumers. This can as well be done manually through the UI.
+
+### Connections
+
+Connections make the link between consumers and software. Each consumer can have multiple connections. A connection is represented by a `name`, a `link to a specific software` and `link to a specific Chift API`. A connection will for example represent the credentials to connect to an Odoo instance for a specific consumer.
+
+> The API can be used to retrieve the list of active connections for consumers and as well to get a public URL that consumers can use to configure their connections.
+
+### Authentication
+
+[See the authentication section](Authentication.md)
+
+### Example
+
+###### The following steps are an example of how you could use Chift API to retrieve a list of clients on the accounting software (Odoo) of one of your client/consumer.
+
+1. Active `Odoo` as an available integration for your clients
+2. Get a BEARER token so that you can perform requests on our API. [See the authentication section.](Authentication.md)
+3. Create a consumer by using the UI interface or by using the [Create consumer](../reference/Chift.json/paths/~1consumers/post) endpoint.
+4. If you use the API, you will receive the consumerid as response. If you use the UI, you will be able to see the consumerid by clicking on the eye icon.
+5. Configure an Odoo connection, either by using the UI to navigate to the connection page, or by retrieving the connection page URL and sharing it with your client by using the [Add a new connection](../reference/Chift.json/paths/~1consumers~1{consumerid}~1connections/post) endpoint.
+6. This step is normally performed by your "clients": Open the Connection page and click on Connect new to enter your Odoo credentials to be able to connect to Odoo.
+
+![image.png](../assets/images/image.png)
+
+
+
+7. Once your connection is created, you can use the [Get active connections](../reference/Chift.json/paths/~1consumers~1{consumerid}~1connections/get) to verify that the connection is active for your client.
+
+8. Now, you can for example use the [Accounting - Get clients](../reference/Chift.json/paths/~1consumers~1{consumer_id}~1accounting~1clients/get) endpoint with the `consumerid` to retrieve a list of clients on the Odoo of your consumer/client.
+
+> We achieved the goal of this demonstration. You can test other endpoints of the [Accounting API](../reference/Chift.json) to enjoy the power of Chift!
+
