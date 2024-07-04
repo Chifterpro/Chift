@@ -1,0 +1,28 @@
+# Syncs  [BETA]
+
+### Summary
+
+Syncs can be used to create easy and scalable automations between two or more of Chift's unified APIs. It can for example be used to create an automation workflow between the Invoicing API (or one specific connector inside the Invoicing API) and the Accounting API (or one specific connector inside the Accounting API). Through the sync, the end-users can select their invoicing and accounting software and can activate the workflow(s). As you can imagine, it creates a multitude of automations opportunities without you having to worry about connectivity, monitoring, scalability, maintenance, ... 
+
+### Concepts
+
+#### Sync
+
+A sync is the definition of connecting multiple APIs or connectors inside Chift. 
+
+#### Mappings
+
+While defining a sync, you can add mappings to the onboarding process of your end-users. E.g. mapping of tax rates between POS and Accounting softwares.
+
+#### Flows
+
+One or more flows can be created to create automations for a sync.
+A flow can be triggered by an event or by a timer (e.g. each night at 4AM). A flow contains a process (e.g. get invoices and inject into accounting) that will be executed for each of the consumers linked to the sync.
+
+#### Consumers
+Consumers are the end-users that wants to activate the automation/integration. Consumers will receive a link where they will have to connect the connectors defined in the sync. The flow will be executed for each of the consumers that have active connections for each of the defined connectors.
+
+![Sync.drawio (1).png](<../assets/images/Sync.png>)
+
+
+### More info coming soon ...
